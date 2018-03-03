@@ -1,0 +1,251 @@
+
+My Recharge app
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Recharge Shop</title>
+<script src="web3.min.js"></script>
+</head>
+<body>
+<form style="background-color:#E6E6FA">
+<div
+class="cls2" style="  width: 156px;
+    height: 100px;
+    background-color: red;
+    position: relative;
+    -webkit-animation-name: example; 
+    -webkit-animation-duration: 4s; 
+    -webkit-animation-iteration-count: 3; 
+    animation-name: example;
+    animation-duration: 4s;
+    animation-iteration-count: 3;
+}
+@-webkit-keyframes example {
+    0%   {background-color:red; left:0px; top:0px;
+    25%  {background-color:yellow; left:200px; top:0px;
+    50%  {background-color:blue; left:200px; top:200px;
+    75%  {background-color:green; left:0px; top:200px;
+    100% {background-color:red; left:0px; top:0px;
+}
+@keyframes example {
+    0%   {background-color:red; left:0px; top:0px;
+    25%  {background-color:yellow; left:200px; top:0px;
+    50%  {background-color:blue; left:200px; top:200px;
+    75%  {background-color:green; left:0px; top:200px;
+    100% {background-color:red; left:0px; top:0px;
+}"><br>OFFEER FOR JIO<br>1.JIO-JIO free calls</div>
+
+
+
+<center>
+<style>
+p {
+    font-family: blue;
+    font-size: 20px;
+    color:#000000;
+}
+</style>
+
+<br><h1 style="color:green">Recharge Shop</h1></div>
+<p>Shop_owner_Balance</p>                                                                
+<input id="i1" type="text" placeholder="Rec_keyword"/>
+<input type="button" onclick="balance()" value="balance"> <br>
+
+<p>Ph_Balance_user</p>
+<input id="i2" type="text" placeholder="Ph_number"/>
+<input type="button" onclick="ph_balance()" value="ph_balance"><br><br><br>
+
+<p><Rec_History></p>
+<button onclick="history()" value="history">Rec_History</button><br>
+
+<p>Transfer</p>
+<input id="i3" type="text" placeholder="Rec_keyword"/>
+<input id="i4" type="text" placeholder="ph_number"/>
+<input id="i5" type="text" placeholder="trans_amt"/>
+<input type="button" onclick="transfer()" value="transfer"><br>
+
+
+
+</center>
+</form>
+</body>
+<script>
+web3.eth.defaultAccount = web3.eth.accounts[0];
+        var recharge2= web3.eth.contract([
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "ph_no",
+				"type": "uint256"
+			}
+		],
+		"name": "ph_balance",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "from",
+				"type": "uint256"
+			}
+		],
+		"name": "balance",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "from",
+				"type": "uint256"
+			},
+			{
+				"name": "ph_no",
+				"type": "uint256"
+			},
+			{
+				"name": "_cash",
+				"type": "uint256"
+			}
+		],
+		"name": "transfer",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "history",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256[]"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	}
+]);
+var sybex= recharge2.at('0x9d4bf68b52019af03dcc74a9488db79f28af715b');
+if(!web3.isConnected()) {
+  
+        console.log("Ok....");
+        
+      } else {
+        console.log("no");
+      }
+      web3.version.getNetwork((err, netId) => {
+            switch (netId) {
+              case "1":
+                console.log('This is mainnet')
+                break
+              case "2":
+                console.log('This is the deprecated Morden test network.')
+                break
+              case "3":
+                console.log('This is the ropsten test network.')
+                break
+              case "4":
+                console.log('This is the Rinkeby test network.')
+                break
+              case "42":
+                console.log('This is the Kovan test network.')
+                break
+              default:
+                console.log('This is an unknown network.')
+            }
+        })
+function balance()
+{
+var a=document.getElementById("i1").value;
+sybex.balance(a,function(error,result)
+	{
+            if (!error) 
+	{
+              alert(result);
+                             
+        }   else 
+	{										 
+              console.error(error);
+	}
+        });
+	
+//alert("Done!.....");
+}
+function ph_balance()
+{
+var a1=document.getElementById("i2").value;
+sybex.ph_balance(a1,function(error,result)
+	{
+            if (!error) 
+	{
+              alert(result);
+                             
+        }   else 
+	{
+              console.error(error);
+	}
+        });
+}
+function transfer()
+{
+var a2=document.getElementById("i3").value;
+var b2=document.getElementById("i4").value;
+var c2=document.getElementById("i5").value;
+sybex.transfer(a2,b2,c2,function(error,result)
+	{
+            if (!error) 
+	{
+             alert(result);
+                             
+        }   else 
+	{
+              console.error(error);
+	}
+        });
+}
+function history()
+{
+sybex.history(function(error,result)
+	{
+            if (!error) 
+	{
+              alert(result);
+                             
+        } else 
+	{
+              console.error(error);
+}
+	});
+}
+</script>
+
+</html>
