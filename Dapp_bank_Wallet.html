@@ -1,0 +1,313 @@
+Dapp bank html program
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Bank Wallet ERC20</title>
+<script src="web3.min.js"></script>
+</head>
+<body style="color:#fff;background:#86af49">
+<form>
+<center>
+<style>
+p {
+    font-family: blue;
+    font-size: 20px;
+    color:#000000;
+}
+</style>
+<h1 style="color:red">Bank Wallet</h1>
+<div class="a" style="width:800px;background:skyblue;border:1px dotted black;text-align:center;">
+<p>Total_Supply</p>
+
+<input id="i1" type="text" placeholder="DepositAmount"/>
+<input type="button" onclick="totalSupply()" value="totalSupply"> <br><br></div><br>
+
+<div class="a" style="width:800px;background:skyblue;border:1px dotted black;text-align:center;"><p>Transfer</p>
+<input id="i3" type="text" placeholder="Reciver"/>
+<input id="i4" type="text" placeholder="TransAmount"/>
+<input type="button" onclick="transfer()" value="transfer"><br><br></div><br>
+
+<div class="cls" style="width:800px;background:skyblue;border:1px dotted black;text-align:center;"><p>Approve</p>
+<input id="i5" type="text" placeholder="Spender"/>
+<input id="i6" type="text" placeholder="Value"/>
+<input type="button" onclick="approve()" value="approve"><br><br></div><br>
+
+<div class="cl" style="width:800px;background:skyblue;border:1px dotted black;text-align:center;"><p>Allowance</p>
+<input id="i7" type="text" placeholder="OwnerAddress"/>
+<input id="i8" type="text" placeholder="SpenderAddress"/>
+<input type="button" onclick="allowance()" value="allowance"><br><br></div><br>
+
+<div class="cls" style="width:800px;background:skyblue;border:1px dotted black;text-align:center;"><p>TransferFrom</p>
+<input id="i9" type="text" placeholder="FromAddress"/>
+<input id="i10" type="text" placeholder="ToAddress"/>
+<input id="i11" type="text" placeholder="TransAmount"/>
+<input type="button" onclick="transferFrom()" value="transferFrom"><br><br></div><br>
+
+<div class="cls" style="width:800px;background:skyblue;border:1px dotted black;text-align:center;"><p>Balance_Of</p>	
+<input id="i12" type="text" placeholder="Address"/>
+<input type="button" onclick="balanceOf()" value="balanceOf"><br><br></div>
+	
+</center>
+</form>
+</body>
+<script>
+web3.eth.defaultAccount = web3.eth.accounts[0];
+        var dapp= web3.eth.contract([
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_spender",
+				"type": "address"
+			},
+			{
+				"name": "_value",
+				"type": "uint256"
+			}
+		],
+		"name": "approve",
+		"outputs": [
+			{
+				"name": "success",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "_from",
+				"type": "address"
+			},
+			{
+				"name": "_to",
+				"type": "address"
+			},
+			{
+				"name": "_value",
+				"type": "uint256"
+			}
+		],
+		"name": "transferFrom",
+		"outputs": [
+			{
+				"name": "success",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "balcheck",
+				"type": "address"
+			}
+		],
+		"name": "balanceOf",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "reciver",
+				"type": "address"
+			},
+			{
+				"name": "transamt",
+				"type": "uint256"
+			}
+		],
+		"name": "transfer",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "dep",
+				"type": "uint256"
+			}
+		],
+		"name": "totalSupply",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "_owner",
+				"type": "address"
+			},
+			{
+				"name": "_spender",
+				"type": "address"
+			}
+		],
+		"name": "allowance",
+		"outputs": [
+			{
+				"name": "remaining",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	}
+]);
+
+var sybex= dapp.at('0xd93d5cbe910b0386e9d3f8a597c4d74bd6318d96');
+if(!web3.isConnected()) {
+  
+        console.log("Ok....");
+        
+      } else {
+        console.log("no");
+      }
+      web3.version.getNetwork((err, netId) => {
+            switch (netId) {
+              case "1":
+                console.log('This is mainnet')
+                break
+              case "2":
+                console.log('This is the deprecated Morden test network.')
+                break
+              case "3":
+                console.log('This is the ropsten test network.')
+                break
+              case "4":
+                console.log('This is the Rinkeby test network.')
+                break
+              case "42":
+                console.log('This is the Kovan test network.')
+                break
+              default:
+                console.log('This is an unknown network.')
+            }
+        })
+function totalSupply()
+{
+var a=document.getElementById("i1").value;
+
+sybex.totalSupply(a,function(error,result)
+	{
+            if (!error) 
+	{
+              alert(result);
+                             
+        }   else 
+	{
+              console.error(error);
+	}
+        });
+}
+function transfer()
+{
+var a1=document.getElementById("i3").value;
+var b1=document.getElementById("i4").value;
+sybex.transfer(a1,b1,function(error,result)
+	{
+            if (!error) 
+	{
+              alert(result);
+                             
+        }   else 
+	{
+              console.error(error);
+	}
+        });
+}
+function approve()
+{
+var a2=document.getElementById("i5").value;
+var b2=document.getElementById("i6").value;
+sybex.approve(a2,b2,function(error,result)
+	{
+            if (!error) 
+	{
+             alert(result);
+                             
+        }   else 
+	{
+              console.error(error);
+	}
+        });
+}
+function allowance()
+{
+var a3=document.getElementById("i7").value;
+var b3=document.getElementById("i8").value;
+sybex.allowance(a3,b3,function(error,result)
+	{
+            if (!error) 
+	{
+              alert(result);
+                             
+        } else 
+	{
+              console.error(error);
+}
+	});
+}
+function transferFrom()
+{
+var a4=document.getElementById("i9").value;
+var b4=document.getElementById("i10").value;
+var c1=document.getElementById("i11").value;
+sybex.transferFrom(a4,b4,c1,function(error,result)
+	{
+            if (!error) 
+	{
+              alert(result);
+                             
+        }   else 
+	{
+              console.error(error);
+	}
+        });
+
+}
+function balanceOf()
+{
+var a5=document.getElementById("i12").value;
+sybex.balanceOf(a5,function(error,result)
+	{
+            if (!error) 
+	{
+              alert(result);
+                             
+        } else 
+	{
+              console.error(error);
+        }
+	});
+
+}
+</script>
+
+</html>
